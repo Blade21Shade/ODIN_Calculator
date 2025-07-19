@@ -1,13 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator</title>
-    <script src="index.js"></script>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Calculator</title>
+        <script src="index.js"></script>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <div class="calculator-container">
+            <div class="display-container"></div>
+            <div class="keypad-container">
+                <div class="number-pad">
+                    <!--This is meant to be like a phone pad, with a 3x3 grid for 1-9 and 0 at the bottom in the middle-->
+                    <div class="pad-single-container">
+                        <button id="1btn" class="pad-button">1</button>
+                    </div>
+                    <div class="pad-single-container">
+                        <button id="2btn" class="pad-button">2</button>
+                    </div>
+                    <div class="pad-single-container">
+                        <button id="3btn" class="pad-button">3</button>
+                    </div>
+                    <div class="pad-single-container">
+                        <button id="4btn" class="pad-button">4</button>
+                    </div>
+                    <div class="pad-single-container">
+                        <button id="5btn" class="pad-button">5</button>
+                    </div>
+                    <div class="pad-single-container">
+                        <button id="6btn" class="pad-button">6</button>
+                    </div>
+                    <div class="pad-single-container">
+                        <button id="7btn" class="pad-button">7</button>
+                    </div>
+                    <div class="pad-single-container">
+                        <button id="8btn" class="pad-button">8</button>
+                    </div>
+                    <div class="pad-single-container">
+                        <button id="9btn" class="pad-button">9</button>
+                    </div>
+                    <div class="pad-single-container">
+                        <button id=".btn" class="pad-button">.</button>
+                    </div>
+                    <div class="pad-single-container">
+                        <button id="0btn" class="pad-button">0</button>
+                    </div>
+                    <div class="pad-single-container">
+                        <button id="=btn"class="pad-button">=</button>
+                    </div>
+                </div>
+                <div class="operator-pad">
+                    <div class="pad-single-container">
+                        <button id="+btn" class="pad-button">+</button>
+                    </div>
+                    <div class="pad-single-container">
+                        <button id="-btn" class="pad-button">-</button>
+                    </div>
+                    <div class="pad-single-container">
+                        <button id="*btn" class="pad-button">*</button>
+                    </div>
+                    <div class="pad-single-container">
+                        <button id="/btn" class="pad-button">/</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

@@ -1,7 +1,7 @@
 // Data
-let firstOperand = 0;
-let secondOperand = 0;
-let computedVal = 0;
+let firstOperand = NaN;
+let secondOperand = NaN;
+let computedVal = NaN;
 
 const Operations = Object.freeze({
     NOTSET: "NOTSET", // This is set when an operation finishes and used before the first run; it prevents chained operations from occurring
@@ -58,7 +58,7 @@ function div() {
 // Setting functions
 function setOperator(operator) {
     if (currentOperation !== "NOTSET") { // If this is in the middle of parsing the string any operators after the first are ignored
-        return;
+        return; // It may be better to call operate here instead, however in the case of two operators in a row without a second operand this could break
     }
     switch(operator) {
         case "+":
