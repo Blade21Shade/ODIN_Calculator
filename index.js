@@ -96,11 +96,13 @@ const display = document.querySelector(".display-container");
 
 const numberBtnList = document.querySelectorAll(".number-pad .pad-button");
 numberBtnList.forEach((btn) => {
-    btn.addEventListener("click", () => {
+    if (btn.textContent != "=" && btn.textContent != ".") { // The equal and dot buttons have special functionality defined later
+        btn.addEventListener("click", () => {
         displayVal += btn.textContent;
         display.textContent = displayVal;
         lastBtnWasOperator = false;
-    })
+    });
+    }
 });
 
 const operatorBtnList = document.querySelectorAll(".operator-pad .pad-button");
@@ -114,7 +116,7 @@ operatorBtnList.forEach((btn) => {
     })
 });
 
-const equalBtn = document.querySelector("#=btn");
+const equalBtn = document.querySelector("#equal-btn");
 equalBtn.addEventListener("click", () => {
     let validVal = parseDisplayVal();
     if (validVal) {
@@ -122,3 +124,29 @@ equalBtn.addEventListener("click", () => {
     }
 });
 
+const dotBtn = document.querySelector("#dot-btn");
+dotBtn.addEventListener("click", () => {
+    // Check to see if the current number within the display already has a dot in it; if so, don't place a dot
+    let validPlacement = true;
+
+    // If a . is found before an operator then adding another . is invalid
+    // When an operator or . is found leave the loop as only the last number needs to be checked, not the whole string
+    theLoop: for (let i = -1; i*-1 < displayVal.length; i--) {
+        switch(displayVal.at(i)) {
+            case "+":
+            case "-":
+            case "*":
+            case "/":
+                break theLoop;
+            case ".":
+                validPlacement = false;
+                break theLoop;
+        }
+    }
+
+    if (validPlacement) {
+        displayVal += dotBtn.textContent;
+        display.textContent = displayVal;
+        lastBtnWasOperator = false;
+    }
+});
