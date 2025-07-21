@@ -2,6 +2,8 @@
 let firstOperand = NaN;
 let secondOperand = NaN;
 let computedVal = NaN;
+let alreadyFloat = false; // For float values, this will prevent the user from typing multiple dots into a single number
+let displayVal = ""; // This is what the user sees, it is used to send information to the user and get info from them
 
 const Operations = Object.freeze({
     NOTSET: "NOTSET", // This is set when an operation finishes and used before the first run; it prevents chained operations from occurring
@@ -11,7 +13,7 @@ const Operations = Object.freeze({
     DIV: "DIV",
 });
 
-const currentOperation = Operations.NOTSET;
+let currentOperation = Operations.NOTSET;
 
 // Functions
 // Operation functions
@@ -86,3 +88,13 @@ function setOperand(value, forFirstOperand) {
         secondOperand = value;
     }
 }
+
+// Event functionality
+const btnList = document.querySelectorAll(".pad-button");
+const display = document.querySelector(".display-container");
+btnList.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        displayVal += btn.textContent;
+        display.textContent = displayVal;
+    })
+})
