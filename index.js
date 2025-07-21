@@ -18,22 +18,51 @@ let currentOperation = Operations.NOTSET;
 // Functions
 // Operation functions
 function operate() {
-    switch(currentOperation) {
-        case "ADD":
-            add();    
-            break;
-        case "SUB":
-            sub();
-            break;
-        case "MUL":
-            mul();
-            break;
-        case "DIV":
-            div();
-            break;
-        case "NOTSET":
-            console.log("NOTSET called in operate: This shouldn't happen")
-            break;
+    // Make arrays for the operators and operands, then go through them doing math as needed, finally return the result
+    const operandArray = {};
+    const operatorArray = {};
+    fillEquationArrays(operandArray, operatorArray);
+    console.log(operandArray, operatorArray);
+
+    // switch(currentOperation) {
+    //     case "ADD":
+    //         add();    
+    //         break;
+    //     case "SUB":
+    //         sub();
+    //         break;
+    //     case "MUL":
+    //         mul();
+    //         break;
+    //     case "DIV":
+    //         div();
+    //         break;
+    //     case "NOTSET":
+    //         console.log("NOTSET called in operate: This shouldn't happen")
+    //         break;
+    // }
+}
+
+function fillEquationArrays(operandArray, operatorArray) {
+    // Parse the displayVal and fill in the arrays with values from it
+    let temp = "";
+    for (let i = 0; i < displayVal.length; i++) {
+        switch(displayVal[i]) {
+            case "+":
+            case "-":
+            case "*":
+            case "/":
+                operatorArray.push(displayVal[i]);
+                operandArray.push(temp);
+                console.log(temp);
+                console.log(displayVal[i])
+                temp = "";
+                break;
+            default:
+                temp += displayVal[i];
+                console.log(displayVal[i]);
+                break;
+        }
     }
 }
 
@@ -118,10 +147,7 @@ operatorBtnList.forEach((btn) => {
 
 const equalBtn = document.querySelector("#equal-btn");
 equalBtn.addEventListener("click", () => {
-    let validVal = parseDisplayVal();
-    if (validVal) {
-        operate();
-    }
+    operate();
 });
 
 const dotBtn = document.querySelector("#dot-btn");
