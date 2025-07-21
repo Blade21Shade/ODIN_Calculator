@@ -19,8 +19,8 @@ let currentOperation = Operations.NOTSET;
 // Operation functions
 function operate() {
     // Make arrays for the operators and operands, then go through them doing math as needed, finally return the result
-    const operandArray = {};
-    const operatorArray = {};
+    const operandArray = [];
+    const operatorArray = [];
     fillEquationArrays(operandArray, operatorArray);
     console.log(operandArray, operatorArray);
 
@@ -64,6 +64,13 @@ function fillEquationArrays(operandArray, operatorArray) {
                 break;
         }
     }
+    // If anything is left in temp, push it onto the operandArray, if not there is an extra operand so it needs to be removed
+    if (temp !== "") {
+        operandArray.push(temp);
+    } else {
+        operatorArray.pop();
+    }
+    
 }
 
 function add() {
