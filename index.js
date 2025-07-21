@@ -22,7 +22,6 @@ function operate() {
     const operandArray = [];
     const operatorArray = [];
     fillEquationArrays(operandArray, operatorArray);
-    console.log(operandArray, operatorArray);
 
     // switch(currentOperation) {
     //     case "ADD":
@@ -54,13 +53,10 @@ function fillEquationArrays(operandArray, operatorArray) {
             case "/":
                 operatorArray.push(displayVal[i]);
                 operandArray.push(temp);
-                console.log(temp);
-                console.log(displayVal[i])
                 temp = "";
                 break;
             default:
                 temp += displayVal[i];
-                console.log(displayVal[i]);
                 break;
         }
     }
