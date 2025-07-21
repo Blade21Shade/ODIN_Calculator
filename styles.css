@@ -14,12 +14,12 @@ body {
 
 .display-container, .keypad-container {
     margin: 10px;
-    border: inherit;
     width: auto;
 }
 
 .display-container {
     height: 200px;
+    border: inherit;
 }
 
 .keypad-container {
@@ -29,7 +29,7 @@ body {
 
 .number-pad, .operator-pad {
     margin: 10px;
-    border: inherit;
+    border: 2px black solid;
     height: auto;
 }
 
@@ -67,4 +67,8 @@ body {
     height: 81px;
     box-sizing: content-box;
     padding: 0px;
+}
+
+.pad-button:hover {
+    background-color: blanchedalmond;
 }
