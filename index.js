@@ -90,11 +90,35 @@ function setOperand(value, forFirstOperand) {
 }
 
 // Event functionality
-const btnList = document.querySelectorAll(".pad-button");
+// Number buttons and operator buttons are separated so the operator buttons can check to make sure 2 aren't in a row
+let lastBtnWasOperator = true; // Starts as true so the first user input can't be an operator
 const display = document.querySelector(".display-container");
-btnList.forEach((btn) => {
+
+const numberBtnList = document.querySelectorAll(".number-pad .pad-button");
+numberBtnList.forEach((btn) => {
     btn.addEventListener("click", () => {
         displayVal += btn.textContent;
         display.textContent = displayVal;
+        lastBtnWasOperator = false;
     })
-})
+});
+
+const operatorBtnList = document.querySelectorAll(".operator-pad .pad-button");
+operatorBtnList.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        if (!lastBtnWasOperator) {
+            displayVal += btn.textContent;
+            display.textContent = displayVal;
+            lastBtnWasOperator = true;
+        }        
+    })
+});
+
+const equalBtn = document.querySelector("#=btn");
+equalBtn.addEventListener("click", () => {
+    let validVal = parseDisplayVal();
+    if (validVal) {
+        operate();
+    }
+});
+
