@@ -23,6 +23,46 @@ function operate() {
     const operatorArray = [];
     fillEquationArrays(operandArray, operatorArray);
 
+    // Since multiplication and division are done first I need to separate the addition and subtraction operands and operators  
+    const operandArrayAddSub = [];
+    const operatorArrayAddSub = [];
+    
+    let operandIndex = 0;
+    let operatorIndex = 0;
+
+    // Do all * and /, push + and - for later
+    while (true) {
+        if (operatorIndex == operandArray.length - 1) {
+            operandArrayAddSub.push(operandArray[operandIndex]); // This value would be skipped if the loop just broke, so push it
+            break;
+        }
+        
+        let and1 = operandArray[operandIndex];
+        let and2 = operandArray[operandIndex+1];
+        let tor = operatorArray[operatorIndex];
+        
+        let temp = 0;
+        switch(tor) {
+            case "+":
+            case "-":
+                operandArrayAddSub.push(and1);
+                operatorArrayAddSub.push(tor);
+                break;
+            case "*":
+                temp = mul(and1, and2);
+                // Temp is used again if the next operator is * or /, or is appended if that operator is + or -
+                operandArray[operatorIndex+1] = temp; 
+                break;
+            case "/":
+                temp = div(and1, and2);
+                // Temp is used again if the next operator is * or /, or is appended if that operator is + or -
+                operandArray[operatorIndex+1] = temp;
+                break;
+        }
+        operandIndex++;
+        operatorIndex++;
+    }
+
     // switch(currentOperation) {
     //     case "ADD":
     //         add();    
@@ -69,24 +109,24 @@ function fillEquationArrays(operandArray, operatorArray) {
     
 }
 
-function add() {
-    computedVal = firstOperand + secondOperand;
+function add(a, b) {
+    return a + b;
 }
 
-function sub() {
-    computedVal = firstOperand - secondOperand;
+function sub(a, b) {
+    return a - b;
 }
 
-function mul() {
-    computedVal = firstOperand * secondOperand;
+function mul(a, b) {
+    return a * b;
 }
 
-function div() {
+function div(a, b) {
     if (secondOperand == 0) {
         alert("Cannot divide by 0")
-        return;
+        return NaN;
     }
-    computedVal = firstOperand / secondOperand;
+    return a / b;
 }
 
 // Setting functions
