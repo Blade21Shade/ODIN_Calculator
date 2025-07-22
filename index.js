@@ -5,19 +5,13 @@ let computedVal = NaN;
 let alreadyFloat = false; // For float values, this will prevent the user from typing multiple dots into a single number
 let displayVal = ""; // This is what the user sees, it is used to send information to the user and get info from them
 
-const Operations = Object.freeze({
-    NOTSET: "NOTSET", // This is set when an operation finishes and used before the first run; it prevents chained operations from occurring
-    ADD: "ADD",
-    SUB: "SUB",
-    MUL: "MUL",
-    DIV: "DIV",
-});
-
-let currentOperation = Operations.NOTSET;
-
 // Functions
 // Operation functions
 function operate() {
+    if (displayVal.length < 2) {
+        return;
+    }
+    
     // Make arrays for the operators and operands, then go through them doing math as needed, finally return the result
     const operandArray = [];
     const operatorArray = [];
@@ -63,23 +57,20 @@ function operate() {
         operatorIndex++;
     }
 
-    // switch(currentOperation) {
-    //     case "ADD":
-    //         add();    
-    //         break;
-    //     case "SUB":
-    //         sub();
-    //         break;
-    //     case "MUL":
-    //         mul();
-    //         break;
-    //     case "DIV":
-    //         div();
-    //         break;
-    //     case "NOTSET":
-    //         console.log("NOTSET called in operate: This shouldn't happen")
-    //         break;
-    // }
+    operatorIndex = 0;
+    let cumulativeValue = operandArrayAddSub[0];
+    for (let i = 1; i < operandArrayAddSub.length; i++) {
+        let tor = operatorArrayAddSub[operatorIndex];
+        if (tor == "+") {
+            cumulativeValue = add(cumulativeValue, operandArrayAddSub[i]);
+        } else {
+            cumulativeValue = sub(cumulativeValue, operandArrayAddSub[i]);
+        }
+        operatorIndex++;
+    }
+
+    displayVal = cumulativeValue;
+    display.textContent = displayVal;
 }
 
 function fillEquationArrays(operandArray, operatorArray) {
@@ -110,11 +101,11 @@ function fillEquationArrays(operandArray, operatorArray) {
 }
 
 function add(a, b) {
-    return a + b;
+    return Number(a) + Number(b);
 }
 
 function sub(a, b) {
-    return a - b;
+    return Number(a) - Number(b);
 }
 
 function mul(a, b) {
@@ -127,38 +118,6 @@ function div(a, b) {
         return NaN;
     }
     return a / b;
-}
-
-// Setting functions
-function setOperator(operator) {
-    if (currentOperation !== "NOTSET") { // If this is in the middle of parsing the string any operators after the first are ignored
-        return; // It may be better to call operate here instead, however in the case of two operators in a row without a second operand this could break
-    }
-    switch(operator) {
-        case "+":
-            currentOperation = Operations.ADD;
-            break;
-        case "-":
-            currentOperation = Operations.SUB;
-            break;
-        case "*":
-            currentOperation = Operations.MUL;
-            break;
-        case "/":
-            currentOperation = Operations.DIV;
-            break;
-        default: 
-            alert("Issue when setting operator")
-            break;
-    }
-}
-
-function setOperand(value, forFirstOperand) {
-    if (forFirstOperand) {
-        firstOperand = value;
-    } else {
-        secondOperand = value;
-    }
 }
 
 // Event functionality
