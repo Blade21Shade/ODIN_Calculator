@@ -135,6 +135,32 @@ numberPad.addEventListener("click", (e) => {
         }
     }
 });
+
+const keypad = document.querySelector(".keypad-container");
+keypad.addEventListener("keydown", (e) => {
+    switch(e.key) {
+        case "0":
+        case "1":
+        case "2":
+        case "3":
+        case "4":
+        case "5":
+        case "6":
+        case "7":
+        case "8":
+        case "9":
+            updateDisplay(e.key, false);
+            break;
+        case "+":
+        case "-":
+        case "*":
+        case "/":
+            updateDisplay(e.key, true);
+            break;
+        default:
+            break;
+    }
+})
 // This event listener controls all the clicks for the operator pad buttons
 const operatorPad = document.querySelector(".operator-pad");
 operatorPad.addEventListener("click", (e) => {
