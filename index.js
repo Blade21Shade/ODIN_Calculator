@@ -123,6 +123,7 @@ function div(a, b) {
 // Event functionality
 // Number buttons and operator buttons are separated so the operator buttons can check to make sure 2 aren't in a row
 let lastBtnWasOperator = true; // Starts as true so the first user input can't be an operator
+let equalWasLastClick = true; // Flag for if = was the last input from the user, display updating depends on this flag
 const display = document.querySelector(".display-container");
 
 const numberBtnList = document.querySelectorAll(".number-pad .pad-button");
@@ -130,7 +131,7 @@ numberBtnList.forEach((btn) => {
     if (btn.textContent != "=" && btn.textContent != ".") { // The equal and dot buttons have special functionality defined later
         btn.addEventListener("click", () => {
             updateDisplay(btn.textContent, false);
-    });
+        });
     }
 });
 
@@ -141,7 +142,6 @@ operatorBtnList.forEach((btn) => {
     });
 });
 
-let equalWasLastClick = true;
 const equalBtn = document.querySelector("#equal-btn");
 equalBtn.addEventListener("click", () => {
     if (!equalWasLastClick) {
@@ -157,7 +157,7 @@ dotBtn.addEventListener("click", () => {
 
     // If a . is found before an operator then adding another . is invalid
     // When an operator or . is found leave the loop as only the last number needs to be checked, not the whole string
-    theLoop: for (let i = -1; i*-1 < displayVal.length; i--) {
+    theLoop: for (let i = -1; i*-1 < displayVal.length; i--) { // ! This checks the string in reverse order
         switch(displayVal.at(i)) {
             case "+":
             case "-":
