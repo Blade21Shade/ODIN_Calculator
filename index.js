@@ -126,6 +126,7 @@ let lastBtnWasOperator = true; // Starts as true so the first user input can't b
 let equalWasLastClick = true; // Flag for if = was the last input from the user, display updating depends on this flag
 const display = document.querySelector(".display-container");
 
+// This event listener controls all the clicks for the number pad buttons
 const numberPad = document.querySelector(".number-pad");
 numberPad.addEventListener("click", (e) => {
     if (e.target.classList.contains("pad-button")) {
@@ -134,14 +135,14 @@ numberPad.addEventListener("click", (e) => {
         }
     }
 });
-
+// This event listener controls all the clicks for the operator pad buttons
 const operatorPad = document.querySelector(".operator-pad");
 operatorPad.addEventListener("click", (e) => {
     if (e.target.classList.contains("pad-button")) {
         updateDisplay(e.target.textContent, true);
     }
 });
-
+// Equal event listener
 const equalBtn = document.querySelector("#equal-btn");
 equalBtn.addEventListener("click", () => {
     if (!equalWasLastClick) {
@@ -149,7 +150,7 @@ equalBtn.addEventListener("click", () => {
         operate();
     }
 });
-
+// Dot button event listener (with numbers on page, but has special logic)
 const dotBtn = document.querySelector("#dot-btn");
 dotBtn.addEventListener("click", () => {
     // Check to see if the current number within the display already has a dot in it; if so, don't place a dot
