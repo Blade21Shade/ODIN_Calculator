@@ -144,6 +144,7 @@ numberPad.addEventListener("click", (e) => {
 
 const keypad = document.querySelector(".keypad-container");
 keypad.addEventListener("keydown", (e) => {
+    e.preventDefault();
     switch(e.key) {
         case "0":
         case "1":
