@@ -129,13 +129,7 @@ const numberBtnList = document.querySelectorAll(".number-pad .pad-button");
 numberBtnList.forEach((btn) => {
     if (btn.textContent != "=" && btn.textContent != ".") { // The equal and dot buttons have special functionality defined later
         btn.addEventListener("click", () => {
-            if (equalWasLastClick) {
-                displayVal = "";
-            }
-            displayVal += btn.textContent;
-            display.textContent = displayVal;
-            lastBtnWasOperator = false;
-            equalWasLastClick = false;
+            updateDisplay(btn.textContent, false);
     });
     }
 });
@@ -143,13 +137,8 @@ numberBtnList.forEach((btn) => {
 const operatorBtnList = document.querySelectorAll(".operator-pad .pad-button");
 operatorBtnList.forEach((btn) => {
     btn.addEventListener("click", () => {
-        if (!lastBtnWasOperator) {
-            displayVal += btn.textContent;
-            display.textContent = displayVal;
-            lastBtnWasOperator = true;
-            equalWasLastClick = false;
-        }        
-    })
+        updateDisplay(btn.textContent, true);       
+    });
 });
 
 let equalWasLastClick = true;
@@ -182,12 +171,29 @@ dotBtn.addEventListener("click", () => {
     }
 
     if (validPlacement) {
-        if (equalWasLastClick) {
-            displayVal = "";
-        }
-        displayVal += dotBtn.textContent;
-        display.textContent = displayVal;
-        equalWasLastClick = false;
-        lastBtnWasOperator = false;
+        updateDisplay(dotBtn.textContent, false);
     }
 });
+
+function updateDisplay(btnContent, isOperator) {
+    let validInput = true;
+
+    if (isOperator) {
+        if (!lastBtnWasOperator) {
+            lastBtnWasOperator = true;
+        } else {
+            validInput = false;
+        }
+    } else {
+        if(equalWasLastClick) {
+            displayVal = "";
+        }
+        lastBtnWasOperator = false;
+    }
+
+    if (validInput) {
+        displayVal += btnContent;
+        display.textContent = displayVal;
+        equalWasLastClick = false;
+    }
+}
