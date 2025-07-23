@@ -182,8 +182,12 @@ dotBtn.addEventListener("click", () => {
     }
 
     if (validPlacement) {
+        if (equalWasLastClick) {
+            displayVal = "";
+        }
         displayVal += dotBtn.textContent;
         display.textContent = displayVal;
+        equalWasLastClick = false;
         lastBtnWasOperator = false;
     }
 });
