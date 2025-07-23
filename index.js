@@ -126,14 +126,23 @@ let lastBtnWasOperator = true; // Starts as true so the first user input can't b
 let equalWasLastClick = true; // Flag for if = was the last input from the user, display updating depends on this flag
 const display = document.querySelector(".display-container");
 
-const numberBtnList = document.querySelectorAll(".number-pad .pad-button");
-numberBtnList.forEach((btn) => {
-    if (btn.textContent != "=" && btn.textContent != ".") { // The equal and dot buttons have special functionality defined later
-        btn.addEventListener("click", () => {
-            updateDisplay(btn.textContent, false);
-        });
+const numberPad = document.querySelector(".number-pad");
+numberPad.addEventListener("click", (e) => {
+    if (e.target.classList.contains("pad-button")) {
+        if (e.target.textContent != "=" && e.target.textContent != ".") { // The equal and dot buttons have special functionality defined later
+            updateDisplay(e.target.textContent, false);
+        }
     }
 });
+
+// const numberBtnList = document.querySelectorAll(".number-pad .pad-button");
+// numberBtnList.forEach((btn) => {
+//     if (btn.textContent != "=" && btn.textContent != ".") { // The equal and dot buttons have special functionality defined later
+//         btn.addEventListener("click", () => {
+//             updateDisplay(btn.textContent, false);
+//         });
+//     }
+// });
 
 const operatorBtnList = document.querySelectorAll(".operator-pad .pad-button");
 operatorBtnList.forEach((btn) => {
