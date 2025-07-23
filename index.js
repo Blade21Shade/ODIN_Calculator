@@ -129,9 +129,13 @@ const numberBtnList = document.querySelectorAll(".number-pad .pad-button");
 numberBtnList.forEach((btn) => {
     if (btn.textContent != "=" && btn.textContent != ".") { // The equal and dot buttons have special functionality defined later
         btn.addEventListener("click", () => {
-        displayVal += btn.textContent;
-        display.textContent = displayVal;
-        lastBtnWasOperator = false;
+            if (equalWasLastClick) {
+                displayVal = "";
+            }
+            displayVal += btn.textContent;
+            display.textContent = displayVal;
+            lastBtnWasOperator = false;
+            equalWasLastClick = false;
     });
     }
 });
@@ -143,13 +147,18 @@ operatorBtnList.forEach((btn) => {
             displayVal += btn.textContent;
             display.textContent = displayVal;
             lastBtnWasOperator = true;
+            equalWasLastClick = false;
         }        
     })
 });
 
+let equalWasLastClick = true;
 const equalBtn = document.querySelector("#equal-btn");
 equalBtn.addEventListener("click", () => {
-    operate();
+    if (!equalWasLastClick) {
+        equalWasLastClick = true;
+        operate();
+    }
 });
 
 const dotBtn = document.querySelector("#dot-btn");
