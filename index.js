@@ -135,20 +135,11 @@ numberPad.addEventListener("click", (e) => {
     }
 });
 
-// const numberBtnList = document.querySelectorAll(".number-pad .pad-button");
-// numberBtnList.forEach((btn) => {
-//     if (btn.textContent != "=" && btn.textContent != ".") { // The equal and dot buttons have special functionality defined later
-//         btn.addEventListener("click", () => {
-//             updateDisplay(btn.textContent, false);
-//         });
-//     }
-// });
-
-const operatorBtnList = document.querySelectorAll(".operator-pad .pad-button");
-operatorBtnList.forEach((btn) => {
-    btn.addEventListener("click", () => {
-        updateDisplay(btn.textContent, true);       
-    });
+const operatorPad = document.querySelector(".operator-pad");
+operatorPad.addEventListener("click", (e) => {
+    if (e.target.classList.contains("pad-button")) {
+        updateDisplay(e.target.textContent, true);
+    }
 });
 
 const equalBtn = document.querySelector("#equal-btn");
