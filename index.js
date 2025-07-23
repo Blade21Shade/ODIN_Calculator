@@ -157,6 +157,15 @@ keypad.addEventListener("keydown", (e) => {
         case "9":
             updateDisplay(e.key, false);
             break;
+        case ".":
+            if (dotPressValidityCheck()) {
+                updateDisplay(dotBtn.textContent, false);
+            }
+            break;
+        case "=":
+        case "Enter":
+            runOperateIfValid();
+            break;
         case "+":
         case "-":
         case "*":
@@ -177,11 +186,17 @@ operatorPad.addEventListener("click", (e) => {
 // Equal event listener
 const equalBtn = document.querySelector("#equal-btn");
 equalBtn.addEventListener("click", () => {
+    runOperateIfValid();
+});
+
+function runOperateIfValid() {
     if (!equalWasLastClick) {
         equalWasLastClick = true;
         operate();
     }
-});
+}
+
+
 // Dot button event listener (with numbers on page, but has special logic)
 const dotBtn = document.querySelector("#dot-btn");
 dotBtn.addEventListener("click", () => {
