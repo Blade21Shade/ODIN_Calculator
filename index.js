@@ -83,6 +83,9 @@ function fillEquationArrays(operandArray, operatorArray) {
             case "*":
             case "/":
                 operatorArray.push(displayVal[i]);
+                if (temp == ".") {
+                    temp = "0.0";
+                }
                 operandArray.push(temp);
                 temp = "";
                 break;
@@ -93,6 +96,9 @@ function fillEquationArrays(operandArray, operatorArray) {
     }
     // If anything is left in temp, push it onto the operandArray, if not there is an extra operand so it needs to be removed
     if (temp !== "") {
+        if (temp == ".") {
+            temp = "0.0";
+        }
         operandArray.push(temp);
     } else {
         operatorArray.pop();
@@ -179,6 +185,12 @@ equalBtn.addEventListener("click", () => {
 // Dot button event listener (with numbers on page, but has special logic)
 const dotBtn = document.querySelector("#dot-btn");
 dotBtn.addEventListener("click", () => {
+    if (dotPressValidityCheck()) {
+        updateDisplay(dotBtn.textContent, false);
+    }
+});
+
+function dotPressValidityCheck() {
     // Check to see if the current number within the display already has a dot in it; if so, don't place a dot
     let validPlacement = true;
 
@@ -196,11 +208,9 @@ dotBtn.addEventListener("click", () => {
                 break theLoop;
         }
     }
-
-    if (validPlacement) {
-        updateDisplay(dotBtn.textContent, false);
-    }
-});
+    
+    return validPlacement;
+}
 
 function updateDisplay(btnContent, isOperator) {
     let validInput = true;
