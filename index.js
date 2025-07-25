@@ -1,11 +1,6 @@
 // Data
-let firstOperand = NaN;
-let secondOperand = NaN;
-let computedVal = NaN;
-let alreadyFloat = false; // For float values, this will prevent the user from typing multiple dots into a single number
-let displayVal = ""; // This is what the user sees, it is used to send information to the user and get info from them
+let displayVal = ""; // This is what the user sees; it updates when the user types and when the equation is run
 
-// Functions
 // Operation functions
 function operate() {
     if (displayVal.length < 2) {
@@ -17,7 +12,7 @@ function operate() {
     const operatorArray = [];
     fillEquationArrays(operandArray, operatorArray);
 
-    // Since multiplication and division are done first I need to separate the addition and subtraction operands and operators  
+    // Multiplication and division are done first so the addition and subtraction operators and operands need to be saved until its time to process them
     const operandArrayAddSub = [];
     const operatorArrayAddSub = [];
     
@@ -28,14 +23,14 @@ function operate() {
     while (true) {
         if (operatorIndex == operandArray.length - 1) {
             operandArrayAddSub.push(operandArray[operandIndex]); // This value would be skipped if the loop just broke, so push it
-            break;
+            break; // This is where the while loop exits
         }
         
         let and1 = operandArray[operandIndex];
         let and2 = operandArray[operandIndex+1];
         let tor = operatorArray[operatorIndex];
         
-        let temp = 0;
+        let computedVal = 0;
         switch(tor) {
             case "+":
             case "-":
@@ -43,39 +38,40 @@ function operate() {
                 operatorArrayAddSub.push(tor);
                 break;
             case "*":
-                temp = mul(and1, and2);
-                // Temp is used again if the next operator is * or /, or is appended if that operator is + or -
-                operandArray[operatorIndex+1] = temp; 
+                computedVal = mul(and1, and2);
+                // computedVal is used again if the next operator is * or /, or is appended if that operator is + or -
+                operandArray[operatorIndex+1] = computedVal; 
                 break;
             case "/":
-                temp = div(and1, and2);
-                // Temp is used again if the next operator is * or /, or is appended if that operator is + or -
-                operandArray[operatorIndex+1] = temp;
+                computedVal = div(and1, and2);
+                // computedVal is used again if the next operator is * or /, or is appended if that operator is + or -
+                operandArray[operatorIndex+1] = computedVal;
                 break;
         }
         operandIndex++;
         operatorIndex++;
     }
 
+    // Now do + and -
     operatorIndex = 0;
     let cumulativeValue = operandArrayAddSub[0];
-    for (let i = 1; i < operandArrayAddSub.length; i++) {
+    for (let i = 1; i < operandArrayAddSub.length; i++, operatorIndex++) {
         let tor = operatorArrayAddSub[operatorIndex];
         if (tor == "+") {
             cumulativeValue = add(cumulativeValue, operandArrayAddSub[i]);
         } else {
             cumulativeValue = sub(cumulativeValue, operandArrayAddSub[i]);
         }
-        operatorIndex++;
     }
 
     displayVal = String(cumulativeValue);
     display.textContent = displayVal;
 }
 
+// Fills the operand and operator arrays so .push and .pop can be used to evaluate the equation
 function fillEquationArrays(operandArray, operatorArray) {
     // Parse the displayVal and fill in the arrays with values from it
-    let temp = "";
+    let operandValue = "";
     for (let i = 0; i < displayVal.length; i++) {
         switch(displayVal[i]) {
             case "+":
@@ -83,23 +79,23 @@ function fillEquationArrays(operandArray, operatorArray) {
             case "*":
             case "/":
                 operatorArray.push(displayVal[i]);
-                if (temp == ".") {
-                    temp = "0.0";
+                if (operandValue == ".") {
+                    operandValue = "0.0";
                 }
-                operandArray.push(temp);
-                temp = "";
+                operandArray.push(operandValue);
+                operandValue = "";
                 break;
             default:
-                temp += displayVal[i];
+                operandValue += displayVal[i]; // This builds an operand as displayVal is parsed 1 char at a time 
                 break;
         }
     }
-    // If anything is left in temp, push it onto the operandArray, if not there is an extra operand so it needs to be removed
-    if (temp !== "") {
-        if (temp == ".") {
-            temp = "0.0";
+    // If anything is left in operandValue, push it onto the operandArray, if not, there is an extra operand and it needs to be removed
+    if (operandValue !== "") {
+        if (operandValue == ".") {
+            operandValue = "0.0";
         }
-        operandArray.push(temp);
+        operandArray.push(operandValue);
     } else {
         operatorArray.pop();
     }
@@ -119,7 +115,7 @@ function mul(a, b) {
 }
 
 function div(a, b) {
-    if (secondOperand == 0) {
+    if (b == 0) {
         alert("Cannot divide by 0")
         return NaN;
     }
@@ -137,10 +133,11 @@ const numberPad = document.querySelector(".number-pad");
 numberPad.addEventListener("click", (e) => {
     if (e.target.classList.contains("pad-button")) {
         if (e.target.textContent != "=" && e.target.textContent != ".") { // The equal and dot buttons have special functionality defined later
-            updateDisplay(e.target.textContent, false);
+            updateDisplay(e.target.textContent, false); // The text contents of the buttons are what they represent: 1btn.textContent = 1
         }
     }
 });
+
 // This event listener controls all the clicks for the operator pad buttons
 const operatorPad = document.querySelector(".operator-pad");
 operatorPad.addEventListener("click", (e) => {
@@ -148,6 +145,7 @@ operatorPad.addEventListener("click", (e) => {
         updateDisplay(e.target.textContent, true);
     }
 });
+
 // The event listener for keyboard presses instead of button presses
 document.addEventListener("keydown", (e) => {
     e.preventDefault(); // This is to deal with the Enter key doing weird stuff
@@ -186,6 +184,7 @@ document.addEventListener("keydown", (e) => {
             break;
     }
 })
+
 // Equal event listener
 const equalBtn = document.querySelector("#equal-btn");
 equalBtn.addEventListener("click", () => {
@@ -199,7 +198,7 @@ function runOperateIfValid() {
     }
 }
 
-// Dot button event listener (with numbers on page, but has special logic)
+// Dot button event listener (with number buttons on page, but has special logic)
 const dotBtn = document.querySelector("#dot-btn");
 dotBtn.addEventListener("click", () => {
     if (dotPressValidityCheck()) {
@@ -229,6 +228,7 @@ function dotPressValidityCheck() {
     return validPlacement;
 }
 
+// This adds a character to the display if pressing it is valid
 function updateDisplay(btnContent, isOperator) {
     let validInput = true;
 
@@ -252,6 +252,7 @@ function updateDisplay(btnContent, isOperator) {
     }
 }
 
+// Used if the user hits backspace on their keyboard
 function deleteCharacter() {
     if (displayVal.length == 0) {
         return;
