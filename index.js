@@ -69,7 +69,7 @@ function operate() {
         operatorIndex++;
     }
 
-    displayVal = cumulativeValue;
+    displayVal = String(cumulativeValue);
     display.textContent = displayVal;
 }
 
@@ -129,7 +129,7 @@ function div(a, b) {
 // Event functionality
 // Number buttons and operator buttons are separated so the operator buttons can check to make sure 2 aren't in a row
 let lastBtnWasOperator = true; // Starts as true so the first user input can't be an operator
-let equalWasLastClick = true; // Flag for if = was the last input from the user, display updating depends on this flag
+let equalWasLastClick = true; // Flag for if "=" was the last input from the user, display updating depends on this flag
 const display = document.querySelector(".display-container");
 
 // This event listener controls all the clicks for the number pad buttons
@@ -141,10 +141,17 @@ numberPad.addEventListener("click", (e) => {
         }
     }
 });
-
+// This event listener controls all the clicks for the operator pad buttons
+const operatorPad = document.querySelector(".operator-pad");
+operatorPad.addEventListener("click", (e) => {
+    if (e.target.classList.contains("pad-button")) {
+        updateDisplay(e.target.textContent, true);
+    }
+});
+// The keypad event listener for the various potential key presses
 const keypad = document.querySelector(".keypad-container");
 keypad.addEventListener("keydown", (e) => {
-    e.preventDefault();
+    e.preventDefault(); // This is to deal with the Enter key doing weird stuff
     switch(e.key) {
         case "0":
         case "1":
@@ -173,17 +180,13 @@ keypad.addEventListener("keydown", (e) => {
         case "/":
             updateDisplay(e.key, true);
             break;
+        case "Backspace":
+            deleteCharacter();
+            break;
         default:
             break;
     }
 })
-// This event listener controls all the clicks for the operator pad buttons
-const operatorPad = document.querySelector(".operator-pad");
-operatorPad.addEventListener("click", (e) => {
-    if (e.target.classList.contains("pad-button")) {
-        updateDisplay(e.target.textContent, true);
-    }
-});
 // Equal event listener
 const equalBtn = document.querySelector("#equal-btn");
 equalBtn.addEventListener("click", () => {
@@ -196,7 +199,6 @@ function runOperateIfValid() {
         operate();
     }
 }
-
 
 // Dot button event listener (with numbers on page, but has special logic)
 const dotBtn = document.querySelector("#dot-btn");
@@ -249,4 +251,30 @@ function updateDisplay(btnContent, isOperator) {
         display.textContent = displayVal;
         equalWasLastClick = false;
     }
+}
+
+function deleteCharacter() {
+    if (displayVal.length == 0) {
+        return;
+    }
+    let newLastChar = displayVal.at(-2);
+    switch (newLastChar) {
+        case "0":
+        case "1":
+        case "2":
+        case "3":
+        case "4":
+        case "5":
+        case "6":
+        case "7":
+        case "8":
+        case "9":
+        case ".":
+            lastBtnWasOperator = false;
+            break;
+        default: // The only characters left are operator characters
+            lastBtnWasOperator = true;
+    }
+    displayVal = displayVal.substring(0,displayVal.length -1);
+    display.textContent = displayVal;
 }
