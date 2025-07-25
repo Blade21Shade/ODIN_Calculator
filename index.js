@@ -148,9 +148,8 @@ operatorPad.addEventListener("click", (e) => {
         updateDisplay(e.target.textContent, true);
     }
 });
-// The keypad event listener for the various potential key presses
-const keypad = document.querySelector(".keypad-container");
-keypad.addEventListener("keydown", (e) => {
+// The event listener for keyboard presses instead of button presses
+document.addEventListener("keydown", (e) => {
     e.preventDefault(); // This is to deal with the Enter key doing weird stuff
     switch(e.key) {
         case "0":
